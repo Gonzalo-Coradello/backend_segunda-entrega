@@ -6,11 +6,11 @@
                 <p>{{this.id}}</p>
                 <p>{{this.title}}</p>
                 <p>{{this.price}}</p>
+                <p>{{this.category}}</p>
+                <img src="{{this.thumbnails[0]}}">
             </div>
         {{/each}}
     {{else}}
         <h2>No se encontraron productos</h2>
     {{/if}}
 </div>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>

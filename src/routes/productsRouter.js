@@ -1,59 +1,71 @@
 import { Router } from 'express'
-import ProductManager from '../ProductManager.js'
+import productModel from '../dao/models/product.model.js'
 
 const router = Router()
-const productManager = new ProductManager('./products.json')
 
+// Get products
 router.get('/', async (req, res) => {
-    
-    const products = await productManager.getProducts()
+    try {
+        const products = await productModel.find()
 
-    const limit = req.query.limit
-
-    if(limit) products.splice(limit)
-    
-    res.json({status: "success", products})
+        const limit = req.query.limit
+        if(limit) products.splice(limit)
+        
+        res.json({ status: 'success', payload: products })
+    } catch (error) {
+        console.log(error)
+        res.json({ result: 'error', error })
+    }
 })
 
+// Get one product
 router.get('/:pid', async (req, res) => {
-
-    const pid = req.params.pid
-    const product = await productManager.getProductById(pid)
-
-    if(product) res.json(product)
-    else res.send({status: "error", error: 'No se ha encontrado el producto'})
+    try {
+        const pid = req.params.pid
+        const product = await productModel.findOne({_id: pid})
+        res.json({ status: 'success', payload: product })
+    } catch(error) {
+        console.log(error)
+        res.json({ status: 'error', error })   
+    }
 })
 
+// Add product
 router.post('/', async (req, res) => {
+    try {
+        const newProduct = await productModel.create(req.body)
 
-    const product = req.body
-
-    const productAdded = await productManager.addProduct(product)
-
-    res.json({ status: "success", productAdded })
-    
+    res.json({ status: "success", payload: newProduct })
+    } catch(error) {
+        console.log(error)
+        res.json({ status: 'error', error })   
+    }
 })
 
+// Update product
 router.put('/:pid', async (req, res) => {
+    try {
+        const pid = req.params.pid
+        const productToUpdate = req.body
+        const result = await productModel.updateOne({_id: pid}, productToUpdate)
 
-    const pid = req.params.pid
-    console.log(pid)
-
-    const fieldsToUpdate = req.body
-
-    await productManager.updateProduct(pid, fieldsToUpdate)
-
-    res.send({status: "success", msg: "Product updated"})
-
+        res.json({ status: "success", payload: result })
+    } catch(error) {
+        console.log(error)
+        res.json({ status: 'error', error })   
+    }
 })
 
 router.delete('/:pid', async (req, res) => {
+    try {
+        const pid = req.params.pid
+        const result = await productModel.deleteOne({_id: pid})
 
-    const pid = req.params.pid
-
-    await productManager.deleteProduct(pid)
-
-    res.send({status: "success", msg: "Product deleted"})
+        res.json({ status: "success", payload: result })
+    } catch(error) {
+        console.log(error)
+        res.json({ status: 'error', error })   
+    }
 })
 
 export default router
