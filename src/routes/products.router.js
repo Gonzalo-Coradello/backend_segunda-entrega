@@ -6,7 +6,7 @@ const router = Router()
 // Get products
 router.get('/', async (req, res) => {
     try {
-        const products = await productModel.find()
+        const products = await productModel.find().lean().exec()
 
         const limit = req.query.limit
         if(limit) products.splice(limit)
@@ -22,7 +22,8 @@ router.get('/', async (req, res) => {
 router.get('/:pid', async (req, res) => {
     try {
         const pid = req.params.pid
-        const product = await productModel.findOne({_id: pid})
+        const product = await productModel.findOne({_id: pid}).lean().exec()
+        
         res.json({ status: 'success', payload: product })
     } catch(error) {
         console.log(error)
@@ -33,9 +34,12 @@ router.get('/:pid', async (req, res) => {
 // Add product
 router.post('/', async (req, res) => {
     try {
-        const newProduct = await productModel.create(req.body)
+        // const newProduct = await productModel.create(req.body)
+        const newProduct = req.body
+        const generatedProduct = new productModel(newProduct)
+        await generatedProduct.save()
 
-    res.json({ status: "success", payload: newProduct })
+        res.json({ status: "success", payload: newProduct })
     } catch(error) {
         console.log(error)
         res.json({ status: 'error', error })   
@@ -56,6 +60,7 @@ router.put('/:pid', async (req, res) => {
     }
 })
 
+// Delete product
 router.delete('/:pid', async (req, res) => {
     try {
         const pid = req.params.pid

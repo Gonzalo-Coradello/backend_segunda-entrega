@@ -1,6 +1,7 @@
 import express from "express"
-import productsRouter from "./routes/productsRouter.js"
-// import cartsRouter from "./routes/cartsRouter.js"
+import productsRouter from "./routes/products.router.js"
+import viewsRouter from "./routes/views.router.js"
+import cartsRouter from "./routes/carts.router.js"
 // import viewsRouter from "./routes/viewsRouter.js"
 import handlebars from 'express-handlebars'
 import __dirname from "./utils.js"
@@ -11,29 +12,32 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Configurando el motor de plantillas
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 app.use(express.static(__dirname + '/public'))
 
+// Configuración de rutas
 app.use('/api/products', productsRouter)
-// app.use('/api/carts', cartsRouter)
-// app.use('/', viewsRouter)
+app.use('/api/carts', cartsRouter)
+app.use('/', viewsRouter)
 
-
+// Conectando mongoose con Atlas e iniciando el servidor
 const uri = "mongodb+srv://gonzalo-coradello:Coder123@cluster0.wikzfr2.mongodb.net/?retryWrites=true&w=majority"
 
 mongoose.set('strictQuery', false)
 mongoose.connect(uri, { dbName: 'ecommerce'}, error => {
-    if(!error) {
-        console.log('Connected to DB')
-        app.listen(8080, () => console.log('Server on port 8080'))
+    if(error) {
+        console.log("Can't connect to the DB")
+        return
     }
-    
-    else console.log("Can't connect to DB")
+
+    console.log('DB connected')
+    const server = app.listen(8080, () => console.log('Listening on port 8080'))
+    server.on('error', e => console.log(e))
 })
 
-// const httpServer = app.listen(8080, () => console.log('Server on port 8080'))
-// const io = new Server(httpServer)
-
+// const io = new Server(server)
 // export default io

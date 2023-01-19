@@ -3,11 +3,10 @@
     {{#if products}}
         {{#each products}}
             <div>
-                <p>{{this.id}}</p>
-                <p>{{this.title}}</p>
+                <h2>{{this.title}}</h2>
+                <p>{{this.description}}</p>
                 <p>{{this.price}}</p>
-                <p>{{this.category}}</p>
-                <img src="{{this.thumbnails[0]}}">
+                <a href="/{{this._id}}">Ir al producto</a>
             </div>
         {{/each}}
     {{else}}
