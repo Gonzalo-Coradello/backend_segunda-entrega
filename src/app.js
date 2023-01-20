@@ -1,14 +1,17 @@
 import express from "express"
+import http from "http"
 import productsRouter from "./routes/products.router.js"
 import viewsRouter from "./routes/views.router.js"
 import cartsRouter from "./routes/carts.router.js"
-// import viewsRouter from "./routes/viewsRouter.js"
+import chatRouter from './routes/chat.router.js'
 import handlebars from 'express-handlebars'
 import __dirname from "./utils.js"
 import { Server } from "socket.io"
 import mongoose from "mongoose"
 
 const app = express()
+const server = http.createServer(app)
+const io = new Server(server)
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -22,6 +25,7 @@ app.use(express.static(__dirname + '/public'))
 // Configuración de rutas
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
+app.use('/chat', chatRouter)
 app.use('/', viewsRouter)
 
 // Conectando mongoose con Atlas e iniciando el servidor
@@ -35,9 +39,8 @@ mongoose.connect(uri, { dbName: 'ecommerce'}, error => {
     }
 
     console.log('DB connected')
-    const server = app.listen(8080, () => console.log('Listening on port 8080'))
+    server.listen(8080, () => console.log('Listening on port 8080'))
     server.on('error', e => console.log(e))
 })
 
-// const io = new Server(server)
-// export default io
+export default io

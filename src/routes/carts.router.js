@@ -4,6 +4,7 @@ import productModel from '../dao/models/product.model.js'
 
 const router = Router()
 
+// Crear carrito
 router.post('/', async (req, res) => {
     try {
         const cart = await cartModel.create({products: []})
@@ -14,6 +15,7 @@ router.post('/', async (req, res) => {
     }
 })
 
+// Obtener productos de un carrito
 router.get('/:cid', async (req, res) => {
     try {
         const cid = req.params.cid
@@ -27,7 +29,7 @@ router.get('/:cid', async (req, res) => {
     }
 })
 
-// Add product to cart
+// Agregar producto a un carrito
 router.post('/:cid/products/:pid', async (req, res) => {
     try {const cid = req.params.cid
         const pid = req.params.pid
@@ -38,9 +40,7 @@ router.post('/:cid/products/:pid', async (req, res) => {
         const product = await productModel.findOne({_id: pid})
         if(!product) return res.send({status: "error", error: 'No se ha encontrado el producto'})
 
-
-        const productIndex = cart.products.findIndex(p => p.product.equals(product._id));
-
+        const productIndex = cart.products.findIndex(p => p.product.equals(product._id))
         if(productIndex === -1) {
             cart.products.push({product: product._id, quantity: 1})
             await cart.save()

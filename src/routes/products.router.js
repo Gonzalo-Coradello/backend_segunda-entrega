@@ -23,7 +23,6 @@ router.get('/:pid', async (req, res) => {
     try {
         const pid = req.params.pid
         const product = await productModel.findOne({_id: pid}).lean().exec()
-        
         res.json({ status: 'success', payload: product })
     } catch(error) {
         console.log(error)

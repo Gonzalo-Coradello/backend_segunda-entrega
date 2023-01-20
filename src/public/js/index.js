@@ -1,43 +1,43 @@
 const socket = io()
 
-const deleteID = document.getElementById('deleteID')
-const deleteBtn = document.getElementById('deleteBtn')
-const prodTitle = document.getElementById('title')
-const prodDescription = document.getElementById('description')
-const prodCode = document.getElementById('code')
-const prodPrice = document.getElementById('price')
-const prodStock = document.getElementById('stock')
-const prodCategory = document.getElementById('category')
-const addBtn = document.getElementById('addBtn')
-const productsDOM = document.getElementById('products')
+let user = ''
+const chatBox = document.getElementById('chatbox')
+const logsDiv = document.getElementById('messageLogs')
 
-addBtn.addEventListener('click', (e) => {
+Swal.fire({
+    title: 'Authentication',
+    input: 'text',
+    text: 'Ingrese su correo electrónico',
+    inputValidator: value => {
+        return !value.trim() && 'Por favor ingrese un correo electrónico'
+    },
+    allowOutsideClick: false
+}).then( result => {
+    user = result.value
+    document.getElementById('username').innerHTML = user
+})
+
+// Enviar mensajes
+chatBox.addEventListener('submit', (e) => {
     e.preventDefault()
-    const title = prodTitle.value.trim()
-    const description = prodDescription.value.trim()
-    const code = prodCode.value.trim()
-    const price = prodPrice.value.trim()
-    const stock = prodStock.value.trim()
-    const category = prodCategory.value.trim()
-    if(title.length > 0 && description.length > 0 && price.length > 0 && code.length > 0 && stock.length > 0 && category.length > 0) {
-        socket.emit('addProduct', {title, description, code, price, status: true, stock, category, thumbnails: [] })
-    }
+
+    let msg = e.target.elements.msg.value
+
+    socket.emit('chatMessage', {user, msg})
+
+    e.target.elements.msg.value = ''
+    e.target.elements.msg.focus()
 })
 
-deleteBtn.addEventListener('click', (e) => {
-    e.preventDefault()
-    socket.emit('deleteProduct', {id: deleteID.value})
+// Recibir mensajes
+
+socket.on('message', obj => {
+    outputMessage(obj)
+    logsDiv.scrollTop = logsDiv.scrollHeight
 })
 
-socket.on('showProducts', data => {
-    let products = ''
-    data.forEach(product => {
-        products += `<div>
-        <p>ID: ${product.id}</p>
-        <p>Title: ${product.title}</p>
-        <p>Price: $${product.price}</p>
-        <br>
-    </div>`
-    })
-    productsDOM.innerHTML = products
-})
+function outputMessage({ user, msg }) {
+    const div = document.createElement('div')
+    div.innerHTML = `<p><i>${user}: </i>${msg}</p>`
+    logsDiv.appendChild(div)
+}
