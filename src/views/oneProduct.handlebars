@@ -1,11 +1,16 @@
 <div>
     <h1>{{product.title}}</h1>
+    <h2>{{product.author}}</h2>
     <p>{{product.description}}</p>
     <p>{{product.price}}</p>
-    <p>{{product.category}}</p>
+    <p>{{product.categories}}</p>
     <img src="{{product.thumbnails}}" height="150">    
 </div>
 
-<form action="/delete/{{product._id}}" method="get">
-    <input type="submit" value="Delete product">
+<form action="/carts/63d28b5d6046e6ae60e8b400/products/{{product._id}}" method="post">
+    <input type="submit" value="Agregar al carrito">
+</form>
+
+<form action="/products/delete/{{product._id}}" method="get">
+    <input type="submit" value="Eliminar producto">
 </form>

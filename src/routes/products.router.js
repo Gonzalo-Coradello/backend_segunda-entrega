@@ -6,10 +6,24 @@ const router = Router()
 // Get products
 router.get('/', async (req, res) => {
     try {
-        const products = await productModel.find().lean().exec()
+        const limit = req.query.limit || 10
+        const page = req.query.page || 1
+        const sort = req.query.sort //Funciona si pasamos asc/desc o 1/-1
+        const category = req.query.category
+        const stock = req.query.stock
 
-        const limit = req.query.limit
-        if(limit) products.splice(limit)
+        // Query dinámico. Puede filtrar por categoría, por stock o por ambas.
+        // Si no se pasa ninguno de los dos, busca todos los productos {}
+        const query = {
+            ... category ? {categories: category} : null,
+            ... stock ? {stock: {$gt: 0}} : null
+        }
+
+        const products = await productModel.paginate(query, {
+            page: page, 
+            limit: limit,
+            sort: {price: sort} || null
+        })
         
         res.json({ status: 'success', payload: products })
     } catch (error) {
