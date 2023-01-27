@@ -5,7 +5,7 @@ const chatBox = document.getElementById('chatbox')
 const logsDiv = document.getElementById('messageLogs')
 
 Swal.fire({
-    title: 'Authentication',
+    title: 'Identificate',
     input: 'text',
     text: 'Ingrese su correo electrónico',
     inputValidator: value => {
@@ -14,7 +14,7 @@ Swal.fire({
     allowOutsideClick: false
 }).then( result => {
     user = result.value
-    document.getElementById('username').innerHTML = user
+    document.getElementById('username').innerHTML = user + ':'
 })
 
 // Enviar mensajes

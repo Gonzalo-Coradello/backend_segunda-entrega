@@ -7,7 +7,7 @@ const router = Router()
 // Get products
 router.get('/products', async (req, res) => {
     try {
-        const limit = req.query.limit || 10
+        const limit = req.query.limit || 12
         const page = req.query.page || 1
         const sort = req.query.sort //Funciona si pasamos asc/desc o 1/-1
         const category = req.query.category
