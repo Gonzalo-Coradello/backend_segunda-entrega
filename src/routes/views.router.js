@@ -27,8 +27,8 @@ router.get('/products', async (req, res) => {
             lean: true
         })
 
-        products.prevLink = products.hasPrevPage ? `/products?page=${products.prevPage}&limit=${limit}` : ''
-        products.nextLink = products.hasNextPage ? `/products?page=${products.nextPage}&limit=${limit}` : ''
+        products.prevLink = products.hasPrevPage ? `/products?page=${products.prevPage}&limit=${limit}${category ? `&category=${category}` : ''}${stock ? `&stock=${stock}` : ''}` : ''
+        products.nextLink = products.hasNextPage ? `/products?page=${products.nextPage}&limit=${limit}${category ? `&category=${category}` : ''}${stock ? `&stock=${stock}` : ''}` : ''
 
         res.render('products', products)
     } catch (error) {
