@@ -1,16 +1,49 @@
-<div>
-    <h1>{{product.title}}</h1>
-    <h2>{{product.author}}</h2>
-    <p>{{product.description}}</p>
-    <p>{{product.price}}</p>
-    <p>{{product.categories}}</p>
-    <img src="{{product.thumbnails}}" height="150">    
-</div>
+<section>
 
-<form action="/carts/63d28b5d6046e6ae60e8b400/products/{{product._id}}" method="post">
-    <input type="submit" value="Agregar al carrito">
-</form>
+  <h2>Detalles del producto</h2>
+  <a href="/products" class="btn btn-ghost">Volver</a>
 
-<form action="/products/delete/{{product._id}}" method="get">
-    <input type="submit" value="Eliminar producto">
-</form>
+  <div class="card lg:card-side gap-4 w-4/5 mx-auto mt-4">
+    <div class="max-h-[500px] flex justify-center basis-1/2">
+      <img
+        class="object-cover h-full rounded-xl"
+        src={{product.thumbnails}}
+        alt={{product.title}}
+      />
+    </div>
+    <div class="card-body basis-1/2">
+      <h2 class="card-title mx-auto">{{product.title}}</h2>
+      <h3>{{product.author}}</h3>
+      <p>{{product.description}}</p>
+      <h3>{{product.price}}</h3>
+    </div>
+  </div>
+
+  {{!-- <div>
+        <h1>{{product.title}}</h1>
+        <h2>{{product.author}}</h2>
+        <p>{{product.description}}</p>
+        <p>{{product.price}}</p>
+        <p>{{product.categories}}</p>
+        <img src="{{product.thumbnails}}" height="150">
+    </div> --}}
+
+  <form
+    action="/carts/63d28b5d6046e6ae60e8b400/products/{{product._id}}"
+    method="post"
+  >
+    <input
+      type="submit"
+      value="Agregar al carrito"
+      class="btn btn-outline mt-3"
+    />
+  </form>
+
+  <form action="/products/delete/{{product._id}}" method="get">
+    <input
+      type="submit"
+      value="Eliminar producto"
+      class="btn btn-outline mt-3"
+    />
+  </form>
+</section>

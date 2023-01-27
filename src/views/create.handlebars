@@ -1,14 +1,16 @@
-<div>
+<div class="px-4 max-w-[80vw] mx-auto">
     <form action="/products" method="post">
-        Title: <input type="text" name="title">
-        Author: <input type="text" name="author">
-        Description: <input type="text" name="description">
-        Language: <input type="text" name="lang">
-        Code: <input type="text" name="code">
-        Price: <input type="number" name="price">
-        Stock: <input type="number" name="stock">
-        Categories: <input type="text" name="categories">
-        Thumbnails: <input type="text" name="thumbnails">
-        <input type="submit" value="Send">
+        <div class="grid lg:grid-cols-4 gap-4">
+            <div><h4>Title: </h4><input type="text" name="title" class="input input-bordered w-full max-w-xs"></div>
+            <div><h4>Author: </h4><input type="text" name="author" class="input input-bordered w-full max-w-xs"></div>
+            <div><h4>Description: </h4><input type="text" name="description" class="input input-bordered w-full max-w-xs"></div>
+            <div><h4>Language: </h4><input type="text" name="lang" class="input input-bordered w-full max-w-xs"></div>
+            <div><h4>Code: </h4><input type="text" name="code" class="input input-bordered w-full max-w-xs"></div>
+            <div><h4>Price: </h4><input type="number" name="price" class="input input-bordered w-full max-w-xs"></div>
+            <div><h4>Stock: </h4><input type="number" name="stock" class="input input-bordered w-full max-w-xs"></div>
+            <div><h4>Categories: </h4><input type="text" name="categories" class="input input-bordered w-full max-w-xs"></div>
+            <div><h4>Thumbnails: </h4><input type="text" name="thumbnails" class="input input-bordered w-full max-w-xs"></div>
+        </div>
+        <input type="submit" value="Send" class="btn">
     </form>
 </div>

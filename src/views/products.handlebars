@@ -1,39 +1,36 @@
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Autor</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each docs}}
-                <tr>
-                    <td><a href="/products/{{this._id}}">{{this.title}}</a></td>
-                    <td>{{this.author}}</td>
-                    <td>{{this.description}}</td>
-                    <td>{{this.price}}</td>
-                </tr>
+<section>
+  <h1 class="text-3xl mb-4">Todos nuestros libros</h1>
+  <div
+    class="grid sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-10 w-5/6 max-w-[1200px] mx-auto"
+  >
 
-            {{!-- <div>
-                <h2>{{this.title}}</h2>
-                <p>{{this.description}}</p>
-                <p>{{this.price}}</p>
-                <a href="/{{this._id}}">Ir al producto</a>
-            </div> --}}
+    {{#each docs}}
+      <div class="card border border-primary-color">
+        <figure>
+          <div class="h-80"><img
+              class="h-full"
+              src="{{this.thumbnails}}"
+              alt="{{this.title}}"
+            /></div>
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title text-xl font-bold mx-auto">{{this.title}}</h2>
+          <h4 class="text-sm">{{this.author}}</h4>
+          <h4 class="text-sm">${{this.price}}</h4>
+          <div class="card-actions justify-center mt-4">
+            <a href="/products/{{this.id}}" class="btn">Ver detalle</a>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
 
-            {{/each}}
-        </tbody>
-    </table>
-
-    <div>
-        {{#if hasPrevPage}}
-            <a href="{{prevLink}}">Anterior</a>
-        {{/if}}
-        {{#if hasNextPage}}
-            <a href="{{nextLink}}">Siguiente</a>
-        {{/if}}
-    </div>
-</div>
+  <div class="my-4">
+    {{#if hasPrevPage}}
+      <a href="{{prevLink}}" class="btn">Anterior</a>
+    {{/if}}
+    {{#if hasNextPage}}
+      <a href="{{nextLink}}" class="btn">Siguiente</a>
+    {{/if}}
+  </div>
+</section>
