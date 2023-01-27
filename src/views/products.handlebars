@@ -1,10 +1,9 @@
 <section>
-  <h1 class="text-3xl mb-4">Todos nuestros libros</h1>
+  <h1 class="text-3xl mb-4">Nuestros libros</h1>
 
-  {{!-- <div>
-    <form action="/products" method="get">
-      <label for="category-select"></label>
-      <select name="category" id="category-select">
+  <div class="max-w-[1200px] mx-auto mb-8">
+    <form action="/products/category" method="post" class="flex justify-end gap-2 mr-10">
+      <select name="category" class="select select-bordered border-primary-color w-fit max-w-xs">
         <option value="" selected>Todos los libros</option>
         <option value="novela">Novelas</option>
         <option value="cuento">Cuentos</option>
@@ -16,10 +15,11 @@
         <option value="policial">Policial</option>
         <option value="aventura">Aventura</option>
         <option value="juvenil">Juvenil</option>
-        <option value="colecciones">Colecciones</option>
+        <option value="colección">Colecciones</option>
       </select>
+      <input type="submit" value="Buscar" class="btn">
     </form>
-  </div> --}}
+  </div>
 
   <div
     class="grid sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-10 w-5/6 max-w-[1200px] mx-auto"

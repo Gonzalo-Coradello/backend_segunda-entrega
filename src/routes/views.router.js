@@ -37,21 +37,7 @@ router.get('/products', async (req, res) => {
     }
 })
 
-// Get cart products
-router.get('/carts/:cid', async (req, res) => {
-    try {
 
-        const cid = req.params.cid
-
-        const products = await cartModel.findOne({_id: cid}).populate('products.product').lean()
-
-        res.render('cart', products)
-
-    } catch (error) {
-        console.log(error)
-        res.json({ result: 'error', error })
-    }
-})
 
 // Create products form
 router.get('/products/create', async (req, res) => {
@@ -95,6 +81,34 @@ router.post('/products', async (req, res) => {
     } catch(error) {
         console.log(error)
         res.json({ status: 'error', error })   
+    }
+})
+
+// Filter by category
+router.post('/products/category', async (req, res) => {
+    try {
+        const category = req.body.category
+        res.redirect(`/products?category=${category}`)        
+    } catch(error) {
+        console.log(error)
+        res.json({ status: 'error', error })   
+    }
+})
+
+
+// Get cart products
+router.get('/carts/:cid', async (req, res) => {
+    try {
+
+        const cid = req.params.cid
+
+        const products = await cartModel.findOne({_id: cid}).populate('products.product').lean()
+
+        res.render('cart', products)
+
+    } catch (error) {
+        console.log(error)
+        res.json({ result: 'error', error })
     }
 })
 
