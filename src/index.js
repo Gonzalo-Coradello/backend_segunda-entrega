@@ -8,6 +8,7 @@ import handlebars from 'express-handlebars'
 import __dirname from "./utils.js"
 import { Server } from "socket.io"
 import mongoose from "mongoose"
+import messageModel from "./dao/models/message.model.js"
 
 const app = express()
 const server = http.createServer(app)
@@ -43,4 +44,12 @@ mongoose.connect(uri, { dbName: 'ecommerce'}, error => {
     server.on('error', e => console.log(e))
 })
 
-export default io
+io.on('connection', socket => {
+    console.log('New websocket connection')
+
+    socket.on('chatMessage', async (obj) => {
+        io.emit('message', obj)
+        const newMessage = await messageModel.create({user: obj.user, message: obj.msg})
+        console.log({ status: "success", payload: newMessage })
+    })
+})
